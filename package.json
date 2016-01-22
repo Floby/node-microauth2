@@ -26,7 +26,9 @@
   "homepage": "https://github.com/Floby/node-microauth2#readme",
   "dependencies": {
     "chai": "^3.4.1",
+    "extend": "^3.0.0",
     "istanbul": "^0.4.2",
+    "jsonwebtoken": "^5.5.4",
     "mocha": "^2.3.4"
   }
 }
