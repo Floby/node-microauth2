@@ -5,6 +5,13 @@ node-microauth2
 
 > Minimal tool to start securing your API with OAuth2
 
+Microauth2 aims to provices easy to deploy tools to get started with
+securing an API with OAuth2 so you are out of excuses!
+
+It shouldn't take you more than a couple of hours to get your completely started
+
+It uses JWT under the hood in order to provide completely stateless and DB-free microservices.
+
 Microauth2 provides the following things:
 
 + An authorization server working out of the box
@@ -72,6 +79,13 @@ try {
   // token does not check out
 }
 ```
+
+Limitations
+-----------
+
+Microauth2 only currently supports the following grants:
+
++ Client Credentials
 
 Test
 ----
