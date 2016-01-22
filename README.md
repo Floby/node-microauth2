@@ -5,7 +5,7 @@ node-microauth2
 
 > Minimal tool to start securing your API with OAuth2
 
-Microauth2 aims to provices easy to deploy tools to get started with
+Microauth2 aims to provide easy to deploy tools to get started with
 securing an API with OAuth2 so you are out of excuses!
 
 It shouldn't take you more than a couple of hours to get your completely started
