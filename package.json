@@ -1,0 +1,32 @@
+{
+  "name": "microauth2",
+  "version": "0.0.0",
+  "description": "Minimal tool to start securing your API with OAuth2",
+  "main": "verify.js",
+  "scripts": {
+    "test": "istanbul cover --print details _mocha -- -R spec test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Floby/node-microauth2.git"
+  },
+  "keywords": [
+    "Oauth2",
+    "Gateway",
+    "Authorization",
+    "API",
+    "security",
+    "JWT"
+  ],
+  "author": "Florent Jaby <florent.jaby@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Floby/node-microauth2/issues"
+  },
+  "homepage": "https://github.com/Floby/node-microauth2#readme",
+  "dependencies": {
+    "chai": "^3.4.1",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.3.4"
+  }
+}
