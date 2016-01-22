@@ -31,6 +31,7 @@ You can spawn a minimal authorization server with
     $ microauth2 authorization --config your-config.yml
 
 + `--config` is the path to your config file in YAML
++ the `MICROAUTH2_SECRET` env varibale will be used to sign tokens
 
 ### API Gateway
 
@@ -39,6 +40,7 @@ You can spawn a minimal gateway to your API with
     $ microauth2 gateway --upstream http://your.upstream/
 
 + `--upstream` is the url of your upstream
++ the `MICROAUTH2_SECRET` env varibale will be used to verify tokens
 
 ### Connect/Express middleware
 
