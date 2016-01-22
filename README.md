@@ -28,26 +28,24 @@ Usage
 
 You can spawn a minimal authorization server with
 
-    $ microauth2 authorization --config your-config.yml --aes-key your-key.pem
+    $ microauth2 authorization --config your-config.yml
 
 + `--config` is the path to your config file in YAML
-+ `--aes-key` is the path to your AES key
 
 ### API Gateway
 
 You can spawn a minimal gateway to your API with
 
-    $ microauth2 gateway --upstream http://your.upstream/ --aes-key your-key.pem
+    $ microauth2 gateway --upstream http://your.upstream/
 
 + `--upstream` is the url of your upstream
-+ `--aes-key` is the path to your AES key
 
 ### Connect/Express middleware
 
 ```javascript
 var microauth2 = require('microauth2/middleware')
 
-app.use(microauth2({AESKey: '/path/to/your/key.pem'}))
+app.use(microauth2({secret: 'your-secret'}))
 app.use(function (req, res, next) {
   req.microauth2.hasScope('scope_to_verify')
   req.microauth2.getClientId()
@@ -61,7 +59,7 @@ app.use('/articles', microauth2.needs('articles')) // deny access if scope not g
 ### Module
 
 ```javascript
-var microauth2 = require('microauth2')('/path/to/your/key.pem')
+var microauth2 = require('microauth2')('your-secret')
 
 try {
   var client = microauth2(token)
