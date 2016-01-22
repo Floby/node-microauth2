@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+// vi: ft=javascript
+
+var Gateway = require('../lib/gateway')
+var minimist = require('minimist')
+var args = minimist(process.argv.slice(2))
+
+var help = args.h || args.help
+var upstream = args.upstream
+var secret = process.env.MICROAUTH2_SECRET
+var port = Number(args.p) || Number(args.port) || 0
+
+if (help) {
+  printUsageAndQuit(0)
+}
+
+if (!upstream) {
+  console.error('')
+  console.error('you MUST specify an upstream')
+  console.error('')
+  printUsageAndQuit(1)
+}
+
+function printUsageAndQuit (code) {
+  console.error('Usage: microauth2 gateway --upstream <http-upstream> [--port <port>]')
+  console.error('')
+  process.exit(code)
+}
+
+var gateway = new Gateway({
+  port: port,
+  upstream: upstream,
+  secret: secret
+})
+
+gateway.start(function (error) {
+  if (error) {
+    console.error('could not start gateway')
+    console.error(error.stack)
+    process.exit(2)
+  }
+  console.log('gateway started on port', gateway.port)
+})
