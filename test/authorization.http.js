@@ -3,11 +3,13 @@ var jsonwebtoken = require('jsonwebtoken');
 var supertest = require('supertest');
 var http = require('http');
 var Authorization = require('../lib/authorization')
+var AccessToken = require('../lib/access-token')
+var sinon = require('sinon');
 
 var SECRET = 'test-secret'
 
 describe('authorization server', function () {
-  var authorization, api;
+  var authorization, api, AccessTokenMock;
 
   beforeEach(function (done) {
     authorization = new Authorization({secret: SECRET, port: 0})
@@ -50,6 +52,13 @@ describe('authorization server', function () {
           client_secret: 'my-secret',
           scopes: ['hey']
         }
+        beforeEach(function () {
+          AccessTokenMock = sinon.mock(AccessToken)
+          AccessTokenMock.expects('generate').withArgs(credentials).returns({hello: 'goodbye'})
+        })
+        afterEach(function () {
+          AccessTokenMock.restore()
+        })
         it('replies 200', function (done) {
           api()
             .post('/token')
@@ -58,7 +67,7 @@ describe('authorization server', function () {
             .end(done)
         })
 
-        it('replies with an access/refresh token', function (done) {
+        it('replies with an access token', function (done) {
           api()
             .post('/token')
             .send(credentials)
@@ -87,8 +96,8 @@ describe('authorization server', function () {
           })
           it('is a valid JWT', function () {
             var token = jsonwebtoken.verify(accessToken, SECRET)
-            expect(token.scopes).to.deep.equal(['hey'])
-            expect(token.cid).to.equal('my-id')
+            delete token.iat; //ignore auto value for our comparison
+            expect(token).to.deep.equal({hello: 'goodbye'})
           })
         })
       })
