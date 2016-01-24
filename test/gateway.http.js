@@ -75,6 +75,23 @@ describe('gateway server', function () {
           done()
         })
     })
+
+    describe('when the target is down', function () {
+      beforeEach(function (done) {
+        target.stop(done)
+      })
+      afterEach(function (done) {
+        target.start(done)
+      })
+
+      it('replies with a 503', function (done) {
+        api()
+          .get('/hello')
+          .set('Authorization', 'Bearer ' + token)
+          .expect(503)
+          .end(done)
+      })
+    })
   })
 })
 
