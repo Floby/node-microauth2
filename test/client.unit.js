@@ -7,14 +7,14 @@ describe('new Client(payload)', function () {
   })
 
   describe('.hasScope(hello)', function () {
-    describe('with payload {scopes:["hello"]}', function () {
-      var client = new Client({scopes:['hello']})
+    describe('with payload {scope:["hello"]}', function () {
+      var client = new Client({scope:['hello']})
       it('returns true', function () {
         expect(client.hasScope('hello')).to.be.true
       })
     })
-    describe('with payload {scopes:["world"]}', function () {
-      var client = new Client({scopes:['world']})
+    describe('with payload {scope:["world"]}', function () {
+      var client = new Client({scope:['world']})
       it('returns true', function () {
         expect(client.hasScope('hello')).to.be.false
       })

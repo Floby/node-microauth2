@@ -50,7 +50,7 @@ describe('gateway server', function () {
 
 
   describe('when calling with a valid token', function () {
-    var token = jsonwebtoken.sign({cid: 'hey', scopes: ['scope', 'authorized'], userinfo: {name: 'floby'}}, SECRET)
+    var token = jsonwebtoken.sign({cid: 'hey', scope: ['scope', 'authorized'], userinfo: {name: 'floby'}}, SECRET)
     it('replies 200', function (done) {
       api()
         .get('/hello')
@@ -71,8 +71,8 @@ describe('gateway server', function () {
           expect(req.headers['x-clientid']).to.equal('hey')
           expect(req.headers).to.have.property('x-userinfo')
           expect(req.headers['x-userinfo']).to.equal('eyJuYW1lIjoiZmxvYnkifQ==')
-          expect(req.headers).to.have.property('x-scopes')
-          expect(req.headers['x-scopes']).to.equal('scope,authorized')
+          expect(req.headers).to.have.property('x-scope')
+          expect(req.headers['x-scope']).to.equal('scope,authorized')
           done()
         })
     })

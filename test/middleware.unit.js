@@ -107,7 +107,7 @@ describe('microauth2.needs(scope)', function () {
 
   describe('when there is a client with matching scope', function () {
     it('calls next', function () {
-      req.microauth2 = new Client({scopes: ['scope']})
+      req.microauth2 = new Client({scope: ['scope']})
       needs(req, res, next)
       expect(next).to.have.been.calledWithExactly()
     })
@@ -115,7 +115,7 @@ describe('microauth2.needs(scope)', function () {
 
   describe('when there is a client with no matching scope', function () {
     it('returns a 403', function () {
-      req.microauth2 = new Client({scopes: ['something']})
+      req.microauth2 = new Client({scope: ['something']})
       needs(req, res, next)
       expect(res.statusCode).to.equal(403)
       expect(res._isEndCalled()).to.be.true
