@@ -1,7 +1,8 @@
+var util = require('util');
 var expect = require('chai').expect;
 var jsonwebtoken = require('jsonwebtoken');
 var supertest = require('supertest');
-var http = require('http');
+var Server = require('../lib/server')
 var Gateway = require('../lib/gateway')
 
 var SECRET = 'test-secret'
@@ -95,22 +96,11 @@ describe('gateway server', function () {
   })
 })
 
+util.inherits(Target, Server);
 function Target () {
   var target = this;
-  var server = http.createServer(function (req, res) {
+  var server = Server.call(this, 0, function (req, res) {
     target.lastRequest = req
     res.end()
   })
-
-  this.start = function (callback) {
-    server.listen(0, function (err) {
-      if (err) return callback(err)
-      target.port = server.address().port
-      callback()
-    })
-  }
-
-  this.stop = function (callback) {
-    server.close(callback)
-  }
 }
