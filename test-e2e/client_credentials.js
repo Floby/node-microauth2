@@ -14,7 +14,7 @@ describe('Client Credentials flow', function () {
     config.defaults({clients: [{
       id: 'client-id',
       secret: 'client-secret',
-      scopes: ['A', 'B', 'C']
+      scope: ['A', 'B', 'C']
     }]})
   })
 
