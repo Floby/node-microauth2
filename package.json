@@ -16,6 +16,12 @@
     "type": "git",
     "url": "git+https://github.com/Floby/node-microauth2.git"
   },
+  "files": [
+    "lib/",
+    "middleware.js",
+    "verify.js",
+    "bin/"
+  ],
   "keywords": [
     "Oauth2",
     "Gateway",
