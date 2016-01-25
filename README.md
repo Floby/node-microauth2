@@ -5,10 +5,7 @@ node-microauth2
 
 > Minimal tool to start securing your API with OAuth2
 
-Disclaimer
-----------
-
-/!\ **WARNING** README-DRIVEN DEVELOPMENT. ALL FUNCTIONALITIES MAY NOT BE PRESENT YET /!\
+/!\ **[WARNING]** README-DRIVEN DEVELOPMENT. ALL FUNCTIONALITIES MAY NOT BE PRESENT YET /!\
 
 
 Microauth2 aims to provide easy to deploy tools to get started with
