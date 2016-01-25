@@ -97,6 +97,7 @@ describe('authorization server', function () {
           it('is a valid JWT', function () {
             var token = jsonwebtoken.verify(accessToken, SECRET)
             delete token.iat; //ignore auto value for our comparison
+            delete token.exp; //ignore auto value for our comparison
             expect(token).to.deep.equal({hello: 'goodbye'})
           })
         })

@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+// vi: ft=javascript
+
+var config = require('../lib/authorization-config')
+var help = config.get('help') || config.get('h')
+
+if (help) {
+  printUsageAndQuit(0)
+}
+
+if (!config.get('config')) {
+  console.error('')
+  console.error('you MUST specify a config file')
+  console.error('')
+  printUsageAndQuit(1)
+}
+
+function printUsageAndQuit (code) {
+  console.error('Usage: microauth2 authorization --config <config-file> [--port <port>]')
+  console.error('')
+  process.exit(code)
+}
+
+var Authorization = require('../lib/authorization')
+var authorization = new Authorization({
+  secret: config.get('secret'),
+  port: config.get('port') || 0
+})
+
+authorization.start(function (error) {
+  if (error) {
+    console.error('could not start authorization')
+    console.error(error.stack)
+    process.exit(2)
+  }
+  console.log('authorization started on port', authorization.port)
+})
