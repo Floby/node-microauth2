@@ -17,10 +17,10 @@ It uses JWT under the hood in order to provide completely stateless and DB-free 
 
 Microauth2 provides the following things:
 
-+ [ ] An authorization server working out of the box (_todo_)
-+ [x] A gateway to verify tokens and proxy requests to your API (_doing_)
-+ [x] A connect/express middleware to automatically verify tokens for your API (_done_)
-+ [x] A module to verify tokens (_done_)
++ An authorization server working out of the box 
++ A gateway to verify tokens and proxy requests to your API 
++ A connect/express middleware to automatically verify tokens for your API 
++ A module to verify tokens 
 
 
 Installation
@@ -43,6 +43,8 @@ You can spawn a minimal authorization server with
 
 + `--config` is the path to your config file in YAML
 + the `MICROAUTH2_SECRET` env variable will be used to sign tokens
+
+You can have a look at an example config file in the `examples` directory
 
 ### API Gateway
 
@@ -84,12 +86,16 @@ try {
 }
 ```
 
-Limitations
+Supported flows
 -----------
 
-Microauth2 only currently supports the following grants:
+Microauth2 only currently supports the following flows:
 
-+ Client Credentials
++ [x] Client Credentials Grant
++ [ ] Resource Owner Credentials Grant
++ [ ] Implicit Grant
++ [ ] Authorization Code Grant
++ [ ] Refresh Token
 
 Test
 ----
