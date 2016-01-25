@@ -1,7 +1,7 @@
 [![Build Status][travis-image]][travis-url] [![Coverage][coveralls-image]][coveralls-url]
 
 node-microauth2
-==================
+===============
 
 > Minimal tool to start securing your API with OAuth2
 
@@ -18,6 +18,12 @@ Microauth2 provides the following things:
 + A gateway to verify tokens and proxy requests to your API
 + A connect/express middleware to automatically verify tokens for your API
 + A module to verify tokens
+
+Disclaimer
+----------
+
+/!\ **WARNING** README-DRIVEN DEVELOPMENT. ALL FUNCTIONALITIES MAY NOT BE PRESENT YET /!\
+
 
 Installation
 ------------
