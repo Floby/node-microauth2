@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if which npm ; then
-  npm install
+  npm install && npm dedupe
 else
   echo "you need to install node.js and npm" >&2
   exit 1
