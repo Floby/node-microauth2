@@ -1,7 +1,3 @@
-scopes:
-  - profile
-  - post_tweets
-  - read_dm
 
 # List all clients known to your APIs
 clients:
@@ -16,5 +12,7 @@ clients:
   - id: client-B
     name: Bob's app
     secret: 95b6efe2-c2e1-11e5-ba38-c724a3fd4517
-    # If you don't specify any scope here, all scopes
-    # in the `scopes` section are available to this client
+    scope:
+      - profile
+      - post_tweets
+      - read_dm

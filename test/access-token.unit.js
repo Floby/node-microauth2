@@ -1,6 +1,7 @@
 var expect = require('chai').expect
 var AccessToken = require('../lib/access-token')
 var Clients = require('../lib/clients')
+var Scopes = require('../lib/scopes')
 var ClientsMock;
 var sinon = require('sinon');
 
@@ -26,10 +27,12 @@ describe('AccessToken', function () {
         var client = {id: 'my-id', secret: 'my-secret', scope: ['A', 'B']}
         beforeEach(function () {
           ClientsMock.expects('getById').withArgs('my-id').returns(client)
+          sinon.stub(Scopes, 'match').withArgs(['A'], ['A', 'B']).returns(['stubbed_scope_match'])
           actual = AccessToken.generate(credentials)
         })
         afterEach(function () {
           ClientsMock.verify()
+          Scopes.match.restore()
         })
 
         it('returns an object', function () {
@@ -38,7 +41,8 @@ describe('AccessToken', function () {
 
         it('has queried scope', function () {
           expect(actual).to.have.property('scope')
-          expect(actual.scope).to.deep.equal(['A'])
+          expect(actual.scope).to.deep.equal(['stubbed_scope_match'])
+          expect(Scopes.match).to.have.been.calledWith(['A'], ['A', 'B'])
         })
 
         it('has client id', function () {
