@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if which npm ; then
+  npm install
+else
+  echo "you need to install node.js and npm" >&2
+  exit 1
+fi
+
