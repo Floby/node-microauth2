@@ -8,7 +8,7 @@ node-microauth2
 Microauth2 aims to provide easy to deploy tools to get started with
 securing an API with OAuth2 so you are out of excuses!
 
-It shouldn't take you more than a couple of hours to get your completely started
+It shouldn't take you more than a couple of hours to get you completely started
 
 It uses JWT under the hood in order to provide completely stateless and DB-free microservices.
 
@@ -30,7 +30,7 @@ Installation
 
     $ npm install -g microauth2
 
-Or if you want to use as module
+Or as a module
 
     $ npm install --save microauth2
 
