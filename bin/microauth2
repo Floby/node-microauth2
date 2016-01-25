@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+// vi: ft=javascript
+
+var program = require('commander');
+
+program
+  .command('authorization', 'Start an authorization server')
+  .command('gateway', 'Start API Gateway')
+
+program.parse(process.argv)

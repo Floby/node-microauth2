@@ -9,6 +9,9 @@
     "test-unit": "istanbul cover --print details _mocha -- -R spec test",
     "test-e2e": "mocha test-e2e"
   },
+  "bin": {
+    "microauth2": "bin/microauth2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Floby/node-microauth2.git"
@@ -29,6 +32,7 @@
   "homepage": "https://github.com/Floby/node-microauth2#readme",
   "dependencies": {
     "body-parser": "^1.14.2",
+    "commander": "^2.9.0",
     "express": "^4.13.4",
     "extend": "^3.0.0",
     "http-proxy": "^1.12.0",
