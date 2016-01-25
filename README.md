@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/Floby/node-microauth2.png?label=ready&title=Ready)](https://waffle.io/Floby/node-microauth2)
 [![Build Status][travis-image]][travis-url] [![Coverage][coveralls-image]][coveralls-url]
 
 node-microauth2
