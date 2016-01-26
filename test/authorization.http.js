@@ -9,7 +9,7 @@ var sinon = require('sinon');
 var SECRET = 'test-secret'
 
 describe('authorization server', function () {
-  var authorization, api, AccessTokenMock;
+  var authorization, api, AccessTokenMock
 
   beforeEach(function (done) {
     authorization = new Authorization({secret: SECRET, port: 0})

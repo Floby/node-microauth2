@@ -34,7 +34,7 @@ describe('Client Credentials flow', function () {
       .set('Authorization', 'Basic ' + new Buffer('client-id:client-secret').toString('base64'))
       .send({
         grant_type: 'client_credentials',
-        scope: ['A', 'C'],
+        scope: 'A C',
       })
       .expect(200)
       .expect('Content-Type', /application\/json/i)
