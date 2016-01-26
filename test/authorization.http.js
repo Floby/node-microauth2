@@ -77,6 +77,8 @@ describe('authorization server', function () {
               var body = res.body
               expect(body).to.have.property('access_token')
               expect(body.access_token).to.be.a('string')
+              expect(body).to.have.property('token_type')
+              expect(body.token_type).to.equal('Bearer')
               expect(body.expires_in).to.be.a('number')
               done()
             })
@@ -129,6 +131,8 @@ describe('authorization server', function () {
               var body = res.body
               expect(body).to.have.property('access_token')
               expect(body.access_token).to.be.a('string')
+              expect(body).to.have.property('token_type')
+              expect(body.token_type).to.equal('Bearer')
               expect(body.expires_in).to.be.a('number')
               done()
             })
