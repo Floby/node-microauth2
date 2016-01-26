@@ -1,10 +1,10 @@
-var jsonwebtoken = require('jsonwebtoken');
-var sinon = require('sinon');
+var jsonwebtoken = require('jsonwebtoken')
+var sinon = require('sinon')
 require('chai').use(require('sinon-chai'))
 var expect = require('chai').expect
-var mockHttp = require('node-mocks-http');
+var mockHttp = require('node-mocks-http')
 var Middleware = require('../middleware')
-var Client = require('../lib/client');
+var Client = require('../lib/client')
 
 var SECRET = 'test-secret'
 
@@ -87,7 +87,7 @@ describe('microauth2(req, res, next)', function () {
 })
 
 describe('microauth2.needs(scope)', function () {
-  var res, next, req;
+  var res, next, req
   var needs = Middleware.needs('scope')
   beforeEach(function () {
     next = sinon.spy()

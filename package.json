@@ -6,7 +6,7 @@
   "scripts": {
     "coveralls": "cat coverage/lcov.info | coveralls",
     "test": "npm run test-unit && npm run test-e2e",
-    "test-unit": "istanbul cover --print details _mocha -- -R spec test",
+    "test-unit": "istanbul cover --print detail _mocha -- -R spec test",
     "test-e2e": "mocha test-e2e"
   },
   "bin": {
@@ -51,6 +51,7 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "coveralls": "^2.11.6",
+    "eslint": "^1.10.3",
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "node-mocks-http": "^1.5.1",

@@ -1,6 +1,6 @@
 var Authorization = require('../lib/authorization')
 var Gateway = require('../lib/gateway')
-var supertest = require('supertest');
+var supertest = require('supertest')
 var Server = require('../lib/server')
 var express = require('express')
 var config = require('../lib/authorization-config')
@@ -11,11 +11,14 @@ describe('Client Credentials flow', function () {
   var api = supertest.bind(null, 'http://localhost:9181')
   var auth = supertest.bind(null, 'http://localhost:9182')
   before(() => {
-    config.defaults({clients: [{
-      id: 'client-id',
-      secret: 'client-secret',
-      scope: ['A', 'B', 'C']
-    }]})
+    config.defaults({
+      clients: [{
+        id: 'client-id',
+        secret: 'client-secret',
+        scope: ['A', 'B', 'C']
+      }],
+      secret: SECRET
+    })
   })
 
   before(function () {
@@ -35,7 +38,7 @@ describe('Client Credentials flow', function () {
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .send({
         grant_type: 'client_credentials',
-        scope: 'A C',
+        scope: 'A C'
       })
       .expect(200)
       .expect('Content-Type', /application\/json/i)
@@ -46,8 +49,8 @@ describe('Client Credentials flow', function () {
           .get('/a')
           .set('Authorization', 'Bearer ' + accessToken)
           .expect(200)
-          .end((err, res) => {
-            if (err) return done(err);
+          .end((err) => {
+            if (err) return done(err)
             api()
               .get('/b')
               .set('Authorization', 'Bearer ' + accessToken)

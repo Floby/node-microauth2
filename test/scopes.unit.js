@@ -1,5 +1,5 @@
 var expect = require('chai').expect
-var Scopes = require('../lib/scopes');
+var Scopes = require('../lib/scopes')
 
 describe('Scopes', function () {
   describe('.match(queried, authorized)', function () {

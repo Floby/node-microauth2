@@ -1,10 +1,10 @@
-var expect = require('chai').expect;
-var jsonwebtoken = require('jsonwebtoken');
-var supertest = require('supertest');
-var http = require('http');
+var expect = require('chai').expect
+var jsonwebtoken = require('jsonwebtoken')
+var supertest = require('supertest')
 var Authorization = require('../lib/authorization')
 var AccessToken = require('../lib/access-token')
-var sinon = require('sinon');
+var sinon = require('sinon')
+var SignedToken = require('../lib/signed-token')
 
 var SECRET = 'test-secret'
 
@@ -54,7 +54,7 @@ describe('authorization server', function () {
         }
         beforeEach(function () {
           AccessTokenMock = sinon.mock(AccessToken)
-          AccessTokenMock.expects('generate').withArgs(credentials).returns({hello: 'goodbye'})
+          AccessTokenMock.expects('generate').withArgs(credentials).returns(new SignedToken({hello: 'goodbye'}, SECRET))
         })
         afterEach(function () {
           AccessTokenMock.restore()
@@ -85,7 +85,7 @@ describe('authorization server', function () {
         })
 
         describe('the access_token', function () {
-          var accessToken;
+          var accessToken
           beforeEach(function (done) {
             api()
               .post('/token')
@@ -98,8 +98,8 @@ describe('authorization server', function () {
           })
           it('is a valid JWT', function () {
             var token = jsonwebtoken.verify(accessToken, SECRET)
-            delete token.iat; //ignore auto value for our comparison
-            delete token.exp; //ignore auto value for our comparison
+            delete token.iat //ignore auto value for our comparison
+            delete token.exp //ignore auto value for our comparison
             expect(token).to.deep.equal({hello: 'goodbye'})
           })
         })
@@ -115,7 +115,7 @@ describe('authorization server', function () {
         }
         beforeEach(function () {
           AccessTokenMock = sinon.mock(AccessToken)
-          AccessTokenMock.expects('generate').withArgs(credentials).returns({hello: 'goodbye'})
+          AccessTokenMock.expects('generate').withArgs(credentials).returns(new SignedToken({hello: 'goodbye'}, SECRET))
         })
         afterEach(function () {
           AccessTokenMock.restore()

@@ -1,13 +1,19 @@
+var jsonwebtoken = require('jsonwebtoken')
 var expect = require('chai').expect
 var AccessToken = require('../lib/access-token')
 var Clients = require('../lib/clients')
 var Scopes = require('../lib/scopes')
-var ClientsMock;
-var sinon = require('sinon');
+var ClientsMock
+var config = require('../lib/authorization-config')
+var sinon = require('sinon')
+var times = require('../lib/times')
 
+var SECRET = 'test-secret'
 describe('AccessToken', function () {
   beforeEach(() => ClientsMock = sinon.mock(Clients) )
   afterEach(() => ClientsMock.restore())
+  beforeEach(() => sinon.stub(config, 'get').withArgs('secret').returns(SECRET))
+  afterEach(() => config.get.restore())
 
   describe('.generate(credentials)', function () {
     describe('with no credentials', function () {
@@ -48,6 +54,14 @@ describe('AccessToken', function () {
         it('has client id', function () {
           expect(actual).to.have.property('cid')
           expect(actual.cid).to.equal('my-id')
+        })
+
+        describe('.toJSON()', function () {
+          it('returns a signed token', function () {
+            var token = actual.toJSON()
+            expect(token).to.be.a('string')
+            expect(token).to.equal(jsonwebtoken.sign(actual, SECRET, {expiresIn: times.accessTokenDuration}))
+          })
         })
       })
 

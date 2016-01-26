@@ -1,4 +1,4 @@
-var jsonwebtoken = require('jsonwebtoken');
+var jsonwebtoken = require('jsonwebtoken')
 var Client = require('./lib/client')
 
 module.exports = Verifier

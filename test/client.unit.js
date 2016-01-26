@@ -1,5 +1,5 @@
 var expect = require('chai').expect
-var Client = require('../lib/client');
+var Client = require('../lib/client')
 
 describe('new Client(payload)', function () {
   it('is a constructor', function () {

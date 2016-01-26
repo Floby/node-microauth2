@@ -1,16 +1,16 @@
-var util = require('util');
-var expect = require('chai').expect;
-var jsonwebtoken = require('jsonwebtoken');
-var supertest = require('supertest');
+var util = require('util')
+var expect = require('chai').expect
+var jsonwebtoken = require('jsonwebtoken')
+var supertest = require('supertest')
 var Server = require('../lib/server')
 var Gateway = require('../lib/gateway')
 
 var SECRET = 'test-secret'
 
 describe('gateway server', function () {
-  var gateway, target, api;
+  var gateway, target, api
   beforeEach(function (done) {
-    target = new Target();
+    target = new Target()
     target.start(done)
   })
   afterEach(function (done) {
@@ -66,7 +66,7 @@ describe('gateway server', function () {
         .end(function (err) {
           if (err) return done(err)
           expect(target.lastRequest).not.to.be.undefined
-          var req = target.lastRequest;
+          var req = target.lastRequest
           expect(req.headers).to.have.property('x-clientid')
           expect(req.headers['x-clientid']).to.equal('hey')
           expect(req.headers).to.have.property('x-userinfo')
@@ -96,10 +96,10 @@ describe('gateway server', function () {
   })
 })
 
-util.inherits(Target, Server);
+util.inherits(Target, Server)
 function Target () {
-  var target = this;
-  var server = Server.call(this, 0, function (req, res) {
+  var target = this
+  Server.call(this, 0, function (req, res) {
     target.lastRequest = req
     res.end()
   })

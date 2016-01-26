@@ -1,4 +1,4 @@
-var jsonwebtoken = require('jsonwebtoken');
+var jsonwebtoken = require('jsonwebtoken')
 var Client = require('./lib/client')
 
 module.exports = Middleware
@@ -7,7 +7,7 @@ function Middleware (options) {
   var secret = options.secret
 
   return function (req, res, next) {
-    var authorization = req.headers['authorization'];
+    var authorization = req.headers['authorization']
     if (!authorization) {
       return res.status(401).end()
     }
@@ -29,7 +29,7 @@ Middleware.needs = function (scope) {
     } else if (!req.microauth2.hasScope(scope)) {
       return res.status(403).end()
     } else {
-    next()
+      next()
     }
   }
 }

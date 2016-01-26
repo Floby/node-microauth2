@@ -1,12 +1,12 @@
-var mockHttp = require('node-mocks-http');
+var mockHttp = require('node-mocks-http')
 var expect = require('chai').expect
-var sinon = require('sinon');
+var sinon = require('sinon')
 
 var Authorization = require('../lib/authorization')
 
 describe('Authorization', function () {
   describe('.sanitizeRequest(req, res, next)', function () {
-    var req, res, next;
+    var req, res, next
     var sanitizeRequest = Authorization.sanitizeRequest
     beforeEach(() => {
       req = mockHttp.createRequest({

@@ -1,6 +1,6 @@
 var expect = require('chai').expect
-var jsonwebtoken = require('jsonwebtoken');
-var Client = require('../lib/client');
+var jsonwebtoken = require('jsonwebtoken')
+var Client = require('../lib/client')
 
 var Verifier = require('../verify')
 
