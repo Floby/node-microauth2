@@ -5,7 +5,8 @@
   "main": "verify.js",
   "scripts": {
     "coveralls": "cat coverage/lcov.info | coveralls",
-    "test": "npm run test-unit && npm run test-e2e",
+    "test": "npm run test-style && npm run test-unit && npm run test-e2e",
+    "test-style": "eslint .",
     "test-unit": "istanbul cover --print detail _mocha -- -R spec test",
     "test-e2e": "mocha test-e2e"
   },
