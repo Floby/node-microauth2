@@ -31,9 +31,9 @@ describe('Client Credentials flow', function () {
   it('obtains an access token and makes an API call', function (done) {
     auth()
       .post('/token')
+      .set('Authorization', 'Basic ' + new Buffer('client-id:client-secret').toString('base64'))
       .send({
-        client_id: 'client-id',
-        client_secret: 'client-secret',
+        grant_type: 'client_credentials',
         scope: ['A', 'C'],
       })
       .expect(200)

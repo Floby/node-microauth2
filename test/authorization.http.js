@@ -50,7 +50,7 @@ describe('authorization server', function () {
           grant_type: 'client_credentials',
           client_id: 'my-id',
           client_secret: 'my-secret',
-          scopes: ['hey']
+          scope: ['hey']
         }
         beforeEach(function () {
           AccessTokenMock = sinon.mock(AccessToken)
@@ -100,6 +100,38 @@ describe('authorization server', function () {
             delete token.exp; //ignore auto value for our comparison
             expect(token).to.deep.equal({hello: 'goodbye'})
           })
+        })
+      })
+
+      describe('with basic authentication', function () {
+        var auth = new Buffer('my-id:my-secret').toString('base64')
+        var credentials = {
+          grant_type: 'client_credentials',
+          client_id: 'my-id',
+          client_secret: 'my-secret',
+          scope: ['hey']
+        }
+        beforeEach(function () {
+          AccessTokenMock = sinon.mock(AccessToken)
+          AccessTokenMock.expects('generate').withArgs(credentials).returns({hello: 'goodbye'})
+        })
+        afterEach(function () {
+          AccessTokenMock.restore()
+        })
+        it('replies with an access token', function (done) {
+          api()
+            .post('/token')
+            .send({scope: ['hey'], grant_type: 'client_credentials'})
+            .set('Authorization', 'Basic ' + auth)
+            .expect('content-type', /application\/json/i)
+            .end(function (err, res) {
+              if (err) return done(err)
+              var body = res.body
+              expect(body).to.have.property('access_token')
+              expect(body.access_token).to.be.a('string')
+              expect(body.expires_in).to.be.a('number')
+              done()
+            })
         })
       })
     })
