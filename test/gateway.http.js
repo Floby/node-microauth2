@@ -39,11 +39,11 @@ describe('gateway server', function () {
   })
 
   describe('when calling with an invalid token', function () {
-    it('replies 403', function (done) {
+    it('replies 401', function (done) {
       api()
         .get('/hello')
         .set('Authorization', 'Bearer helloworld')
-        .expect(403)
+        .expect(401)
         .end(done)
     })
   })

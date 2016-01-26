@@ -25,7 +25,7 @@ function Middleware (options) {
 Middleware.needs = function (scope) {
   return function (req, res, next) {
     if (!req.microauth2) {
-      return next(Error('not authorizes via microauth2'))
+      return next(Error('not authorized via microauth2'))
     } else if (!req.microauth2.hasScope(scope)) {
       return res.status(403).end()
     } else {
