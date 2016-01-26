@@ -1,1 +1,2 @@
-authorization
+#!/usr/bin/env node
+require('./authorization')

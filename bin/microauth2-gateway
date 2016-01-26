@@ -1,1 +1,2 @@
-gateway
+#!/usr/bin/env node
+require('./gateway')
