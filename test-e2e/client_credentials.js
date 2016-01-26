@@ -32,6 +32,7 @@ describe('Client Credentials flow', function () {
     auth()
       .post('/token')
       .set('Authorization', 'Basic ' + new Buffer('client-id:client-secret').toString('base64'))
+      .set('Content-Type', 'application/x-www-form-urlencoded')
       .send({
         grant_type: 'client_credentials',
         scope: 'A C',
