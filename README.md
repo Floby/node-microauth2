@@ -92,7 +92,7 @@ Supported flows
 Microauth2 only currently supports the following flows:
 
 + [x] Client Credentials Grant
-+ [ ] Resource Owner Credentials Grant
++ [ ] Resource Owner Credentials Grant (_DOING_)
 + [ ] Implicit Grant
 + [ ] Authorization Code Grant
 + [ ] Refresh Token
