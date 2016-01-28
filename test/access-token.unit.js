@@ -10,6 +10,7 @@ var times = require('../lib/times')
 
 var SECRET = 'test-secret'
 describe('AccessToken', function () {
+  var client = {id: 'my-id', secret: 'my-secret', scope: ['A', 'B']}
   beforeEach(() => ClientsMock = sinon.mock(Clients) )
   afterEach(() => ClientsMock.restore())
   beforeEach(() => sinon.stub(config, 'get').withArgs('secret').returns(SECRET))
@@ -30,9 +31,8 @@ describe('AccessToken', function () {
           client_secret: 'my-secret',
           scope: ['A']
         }
-        var client = {id: 'my-id', secret: 'my-secret', scope: ['A', 'B']}
         beforeEach(function () {
-          ClientsMock.expects('getById').withArgs('my-id').returns(client)
+          ClientsMock.expects('challengeCredentials').withArgs('my-id', 'my-secret').returns(client)
           sinon.stub(Scopes, 'match').withArgs(['A'], ['A', 'B']).returns(['stubbed_scope_match'])
           actual = AccessToken.generate(credentials)
         })
@@ -73,8 +73,8 @@ describe('AccessToken', function () {
         }
         it('throws', function () {
           var client = {id: 'my-id', secret: 'my-secret'}
-          ClientsMock.expects('getById').withArgs('my-id').returns(client)
-          expect(() => AccessToken.generate(credentials)).to.throw(Error)
+          ClientsMock.expects('challengeCredentials').withArgs('my-id', 'other').throws(Error('invalid client credentials'))
+          expect(() => AccessToken.generate(credentials)).to.throw(/invalid client credentials/i)
           ClientsMock.verify()
         })
       })
