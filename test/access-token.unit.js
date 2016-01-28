@@ -2,17 +2,24 @@ var jsonwebtoken = require('jsonwebtoken')
 var expect = require('chai').expect
 var AccessToken = require('../lib/access-token')
 var Clients = require('../lib/clients')
+var Users = require('../lib/users')
 var Scopes = require('../lib/scopes')
-var ClientsMock
 var config = require('../lib/authorization-config')
 var sinon = require('sinon')
 var times = require('../lib/times')
+var SignedToken = require('../lib/signed-token')
 
 var SECRET = 'test-secret'
+var ClientsMock, UsersMock;
 describe('AccessToken', function () {
   var client = {id: 'my-id', secret: 'my-secret', scope: ['A', 'B']}
+  var bob = {email: 'bob@service.com'}
   beforeEach(() => ClientsMock = sinon.mock(Clients) )
   afterEach(() => ClientsMock.restore())
+  beforeEach(() => UsersMock = sinon.mock(Users) )
+  afterEach(() => UsersMock.restore())
+  beforeEach(() => SignedTokenMock = sinon.mock(SignedToken) )
+  afterEach(() => SignedTokenMock.restore())
   beforeEach(() => sinon.stub(config, 'get').withArgs('secret').returns(SECRET))
   afterEach(() => config.get.restore())
 
@@ -77,6 +84,49 @@ describe('AccessToken', function () {
           expect(() => AccessToken.generate(credentials)).to.throw(/invalid client credentials/i)
           ClientsMock.verify()
         })
+      })
+    })
+
+    describe('with "password" credentials', function () {
+      var actual, credentials = {
+        grant_type: 'password',
+        client_id: 'my-id',
+        client_secret: 'my-secret',
+        email: 'bob@service.com',
+        password: 'password',
+        scope: ['A']
+      }
+      var expectedPayload = {
+        scope: ['A'],
+        cid: 'my-id',
+        userinfo: {email: 'bob@service.com'}
+      }
+      var expiryRule = {
+        expiresIn: times.accessTokenDuration
+      }
+      var expectedSignedToken = {}
+      beforeEach(function () {
+        ClientsMock.expects('challengeCredentials').withArgs('my-id', 'my-secret').returns(client)
+        UsersMock.expects('challengeCredentials').withArgs('bob@service.com', 'password').returns(bob)
+        SignedTokenMock.expects('create').withArgs(expectedPayload, SECRET, expiryRule).returns(expectedSignedToken)
+        actual = AccessToken.generate(credentials)
+      })
+      afterEach(function () {
+        ClientsMock.restore()
+        UsersMock.restore()
+      })
+
+      it('challenges the client credentials', function () {
+        ClientsMock.verify()
+      })
+
+      it('challenges the user credentials', function () {
+        UsersMock.verify()
+      })
+
+      it('returns the signed token with expected data', function () {
+        expect(actual).to.equal(expectedSignedToken)
+        SignedTokenMock.verify()
       })
     })
   })
