@@ -6,7 +6,7 @@ var express = require('express')
 var config = require('../lib/authorization-config')
 
 var SECRET = 'test-secret'
-describe('Client Credentials flow', function () {
+describe('Resource Owner Credentials flow', function () {
   var authorization, gateway, target
   var api = supertest.bind(null, 'http://localhost:9181')
   var auth = supertest.bind(null, 'http://localhost:9182')
@@ -16,6 +16,10 @@ describe('Client Credentials flow', function () {
         id: 'client-id',
         secret: 'client-secret',
         scope: ['A', 'B', 'C']
+      }],
+      users: [{
+        email: 'bob@service.com',
+        password_sha256: 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg='
       }],
       secret: SECRET
     })
@@ -37,8 +41,10 @@ describe('Client Credentials flow', function () {
       .set('Authorization', 'Basic ' + new Buffer('client-id:client-secret').toString('base64'))
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .send({
-        grant_type: 'client_credentials',
-        scope: 'A C'
+        grant_type: 'password',
+        scope: 'A C',
+        email: 'bob@service.com',
+        password: 'password'
       })
       .expect(200)
       .expect('Content-Type', /application\/json/i)
@@ -46,15 +52,16 @@ describe('Client Credentials flow', function () {
         if (err) return done(err)
         var accessToken = res.body.access_token
         api()
-          .get('/a')
+          .get('/alice')
           .set('Authorization', 'Bearer ' + accessToken)
-          .expect(200)
+          .expect(403)
+          .expect({reason: 'bob@service.com cannot access /alice'})
           .end((err) => {
             if (err) return done(err)
             api()
-              .get('/b')
+              .get('/bob')
               .set('Authorization', 'Bearer ' + accessToken)
-              .expect(403)
+              .expect(200)
               .end(done)
           })
       })
@@ -68,8 +75,8 @@ describe('Client Credentials flow', function () {
 
 function Target (port) {
   var app = express()
-  app.get('/b', needsScope('B'))
-  app.get('/a', needsScope('A'))
+  app.get('/alice', needsScope('A'), needsUser('alice@service.com'))
+  app.get('/bob', needsScope('A'), needsUser('bob@service.com'))
 
   function needsScope (scope) {
     return function (req, res, next) {
@@ -77,6 +84,20 @@ function Target (port) {
         next()
       } else {
         res.status(403).end()
+      }
+    }
+  }
+
+  function needsUser (email) {
+    return function (req, res, next) {
+      var userinfo = new Buffer(req.headers['x-userinfo'], 'base64').toString()
+      userinfo = JSON.parse(userinfo)
+      if (userinfo.email === email) {
+        next()
+      } else {
+        res.status(403).json({
+          reason: `${userinfo.email} cannot access ${req.url}` 
+        })
       }
     }
   }
@@ -88,4 +109,3 @@ function Target (port) {
   })
   Server.call(this, port, app)
 }
-

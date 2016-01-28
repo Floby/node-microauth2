@@ -1,4 +1,3 @@
-var jsonwebtoken = require('jsonwebtoken')
 var expect = require('chai').expect
 var AccessToken = require('../lib/access-token')
 var Clients = require('../lib/clients')
@@ -10,7 +9,7 @@ var times = require('../lib/times')
 var SignedToken = require('../lib/signed-token')
 
 var SECRET = 'test-secret'
-var ClientsMock, UsersMock;
+var ClientsMock, UsersMock, SignedTokenMock
 describe('AccessToken', function () {
   var client = {id: 'my-id', secret: 'my-secret', scope: ['A', 'B']}
   var bob = {email: 'bob@service.com'}
@@ -38,37 +37,35 @@ describe('AccessToken', function () {
           client_secret: 'my-secret',
           scope: ['A']
         }
+        var expectedPayload = {
+          scope: ['stubbed_scope_match'],
+          cid: 'my-id'
+        }
+        var expiryRule = {
+          expiresIn: times.accessTokenDuration
+        }
         beforeEach(function () {
+          UsersMock.expects('challengeCredentials').never()
           ClientsMock.expects('challengeCredentials').withArgs('my-id', 'my-secret').returns(client)
+          SignedTokenMock.expects('create').withArgs(expectedPayload, SECRET, expiryRule).returns(expectedPayload)
           sinon.stub(Scopes, 'match').withArgs(['A'], ['A', 'B']).returns(['stubbed_scope_match'])
           actual = AccessToken.generate(credentials)
         })
         afterEach(function () {
-          ClientsMock.verify()
           Scopes.match.restore()
         })
 
-        it('returns an object', function () {
-          expect(actual).to.be.an('object')
+        it('challenges the client credentials', function () {
+          ClientsMock.verify()
         })
 
-        it('has queried scope', function () {
-          expect(actual).to.have.property('scope')
-          expect(actual.scope).to.deep.equal(['stubbed_scope_match'])
-          expect(Scopes.match).to.have.been.calledWith(['A'], ['A', 'B'])
+        it('returns the signed token with expected data', function () {
+          expect(actual).to.equal(expectedPayload)
+          SignedTokenMock.verify()
         })
 
-        it('has client id', function () {
-          expect(actual).to.have.property('cid')
-          expect(actual.cid).to.equal('my-id')
-        })
-
-        describe('.toJSON()', function () {
-          it('returns a signed token', function () {
-            var token = actual.toJSON()
-            expect(token).to.be.a('string')
-            expect(token).to.equal(jsonwebtoken.sign(actual, SECRET, {expiresIn: times.accessTokenDuration}))
-          })
+        it('does not challenge user credentials', function () {
+          UsersMock.verify()
         })
       })
 
@@ -79,7 +76,6 @@ describe('AccessToken', function () {
           client_secret: 'other'
         }
         it('throws', function () {
-          var client = {id: 'my-id', secret: 'my-secret'}
           ClientsMock.expects('challengeCredentials').withArgs('my-id', 'other').throws(Error('invalid client credentials'))
           expect(() => AccessToken.generate(credentials)).to.throw(/invalid client credentials/i)
           ClientsMock.verify()
@@ -88,7 +84,8 @@ describe('AccessToken', function () {
     })
 
     describe('with "password" credentials', function () {
-      var actual, credentials = {
+      var actual
+      var credentials = {
         grant_type: 'password',
         client_id: 'my-id',
         client_secret: 'my-secret',
@@ -97,23 +94,22 @@ describe('AccessToken', function () {
         scope: ['A']
       }
       var expectedPayload = {
-        scope: ['A'],
+        scope: ['stubbed_scope_match'],
         cid: 'my-id',
         userinfo: {email: 'bob@service.com'}
       }
       var expiryRule = {
         expiresIn: times.accessTokenDuration
       }
-      var expectedSignedToken = {}
       beforeEach(function () {
         ClientsMock.expects('challengeCredentials').withArgs('my-id', 'my-secret').returns(client)
         UsersMock.expects('challengeCredentials').withArgs('bob@service.com', 'password').returns(bob)
-        SignedTokenMock.expects('create').withArgs(expectedPayload, SECRET, expiryRule).returns(expectedSignedToken)
+        SignedTokenMock.expects('create').withArgs(expectedPayload, SECRET, expiryRule).returns(expectedPayload)
+        sinon.stub(Scopes, 'match').withArgs(['A'], ['A', 'B']).returns(['stubbed_scope_match'])
         actual = AccessToken.generate(credentials)
       })
       afterEach(function () {
-        ClientsMock.restore()
-        UsersMock.restore()
+        Scopes.match.restore()
       })
 
       it('challenges the client credentials', function () {
@@ -125,7 +121,7 @@ describe('AccessToken', function () {
       })
 
       it('returns the signed token with expected data', function () {
-        expect(actual).to.equal(expectedSignedToken)
+        expect(actual).to.equal(expectedPayload)
         SignedTokenMock.verify()
       })
     })

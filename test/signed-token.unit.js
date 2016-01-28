@@ -12,3 +12,12 @@ describe('new SignedToken(data, secret, options)', function () {
     })
   })
 })
+
+describe('SignedToken.create(data, secret, options)', function () {
+  it('calls new SignedToken(data, secret, options)', function () {
+    var data = {hello: 'goodbye'}
+    var expected = new SignedToken(data, 'somesecret', {expiresIn: 100})
+    var actual = SignedToken.create(data, 'somesecret', {expiresIn: 100})
+    expect(actual.toJSON()).to.equal(expected.toJSON())
+  })
+})
