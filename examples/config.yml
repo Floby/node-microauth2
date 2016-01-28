@@ -1,4 +1,3 @@
-
 # List all clients known to your APIs
 clients:
   - id: client-A
@@ -16,3 +15,10 @@ clients:
       - profile
       - post_tweets
       - read_dm
+
+# List all known users (humans) of your system
+users:
+  - email: charlie@somewhere.com
+    # the hash of the password is stored as a base64 encoded SHA-256
+    # this one was generated with `echo -n password | openssl dgst -binary -sha256 | base64`
+    password_sha256: 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg='
