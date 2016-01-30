@@ -4,7 +4,7 @@ clients:
     name: Alice's app
     secret: 577067ae-c2e1-11e5-bf25-9f5314291cbe
     # you can list the scopes this clients is allowed to request
-    scopes:
+    scope:
       - profile
       - post_tweets
 

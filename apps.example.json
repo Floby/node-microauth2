@@ -1,0 +1,34 @@
+[
+  {
+    "name": "authorization-server",
+    "script": "bin/authorization",
+    "args":["--port", "9000", "--config", "examples/config.yml"],
+    "env": {
+      "MICROAUTH2_SECRET": "example secret"
+    }
+  },
+  {
+    "name": "gateway",
+    "script": "bin/gateway",
+    "args":["--port", "8000"],
+    "env": {
+      "MICROAUTH2_SECRET": "example secret"
+    }
+  },
+  {
+    "name": "api-provider",
+    "script": "examples/provider.js",
+    "env": {
+      "PORT": 3000
+    }
+  },
+  {
+    "name": "client",
+    "script": "examples/alices-app.js",
+    "env": {
+      "PORT": 8008,
+      "AUTHORIZATION_SERVER_URL": "http://localhost:9000",
+      "API_PROVIDER_URL": "http://localhost:3000"
+    }
+  }
+]
