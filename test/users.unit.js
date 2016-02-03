@@ -1,7 +1,7 @@
 var sinon = require('sinon')
 var expect = require('chai').expect
-var Users = require('../lib/users')
-var config = require('../lib/authorization-config')
+var Users = require('../lib/authorization/users')
+var config = require('../lib/authorization/config')
 
 describe('Users', function () {
   var users = [

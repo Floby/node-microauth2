@@ -1,6 +1,6 @@
 var expect = require('chai').expect
 var jsonwebtoken = require('jsonwebtoken')
-var SignedToken = require('../lib/signed-token')
+var SignedToken = require('../lib/authorization/signed-token')
 
 describe('new SignedToken(data, secret, options)', function () {
   describe('.toJSON()', function () {

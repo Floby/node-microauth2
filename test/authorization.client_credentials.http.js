@@ -2,9 +2,9 @@ var expect = require('chai').expect
 var jsonwebtoken = require('jsonwebtoken')
 var supertest = require('supertest')
 var Authorization = require('../lib/authorization')
-var AccessToken = require('../lib/access-token')
+var AccessToken = require('../lib/authorization/access-token')
 var sinon = require('sinon')
-var SignedToken = require('../lib/signed-token')
+var SignedToken = require('../lib/authorization/signed-token')
 
 var SECRET = 'test-secret'
 

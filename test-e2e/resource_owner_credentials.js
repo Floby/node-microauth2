@@ -3,7 +3,7 @@ var Gateway = require('../lib/gateway')
 var supertest = require('supertest')
 var Server = require('../lib/server')
 var express = require('express')
-var config = require('../lib/authorization-config')
+var config = require('../lib/authorization/config')
 
 var SECRET = 'test-secret'
 describe('Resource Owner Credentials flow', function () {
