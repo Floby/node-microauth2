@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // vi: ft=javascript
 
-var config = require('../lib/authorization-config')
+var config = require('../lib/authorization/config')
 var help = config.get('help') || config.get('h')
 
 if (help) {
