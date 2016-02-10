@@ -125,5 +125,43 @@ describe('AccessToken', function () {
         SignedTokenMock.verify()
       })
     })
+
+    describe('with "implicit" credentials', function () {
+      var actual
+      var credentials = {
+        grant_type: 'implicit',
+        client_id: 'my-id',
+        email: 'bob@service.com',
+        password: 'password',
+        scope: ['A']
+      }
+      var expectedPayload = {
+        scope: ['stubbed_scope_match'],
+        cid: 'my-id',
+        userinfo: {email: 'bob@service.com'}
+      }
+      var expiryRule = {
+        expiresIn: times.accessTokenDuration
+      }
+      beforeEach(function () {
+        ClientsMock.expects('challengeCredentials').never()
+        ClientsMock.expects('getById').withArgs('my-id').returns(client)
+        UsersMock.expects('challengeCredentials').withArgs('bob@service.com', 'password').returns(bob)
+        SignedTokenMock.expects('create').withArgs(expectedPayload, SECRET, expiryRule).returns(expectedPayload)
+        sinon.stub(Scopes, 'match').withArgs(['A'], ['A', 'B']).returns(['stubbed_scope_match'])
+        actual = AccessToken.generate(credentials)
+      })
+      afterEach(function () {
+        Scopes.match.restore()
+      })
+
+      it('challends the user credentials', function () {
+        UsersMock.verify()
+      })
+      it('returns the signed token with expected data', function () {
+        expect(actual).to.equal(expectedPayload)
+        SignedTokenMock.verify()
+      })
+    })
   })
 })
