@@ -39,6 +39,12 @@ app.post('/api/resource-owner-credentials', function (req, res, next) {
     })
 })
 
+var implicitView = require('./alices-app/implicit')
+app.get('/implicit.html', function (req, res) {
+  var authUrl = process.env.AUTHORIZATION_SERVER_URL
+  var html = implicitView(`${authUrl}/authorize?client_id=${CLIENT_ID}&scope=profile`)
+  res.send(html)
+})
 
 app.listen(process.env.PORT, function (err) {
   if (err) throw err
