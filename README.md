@@ -93,7 +93,7 @@ Microauth2 only currently supports the following flows:
 
 + [x] Client Credentials Grant
 + [x] Resource Owner Credentials Grant
-+ [ ] Implicit Grant (_TODO_)
++ [x] Implicit Grant
 + [ ] Authorization Code Grant
 + [ ] Refresh Token
 
